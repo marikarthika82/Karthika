@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stylish Calculator</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* ===== Background ===== */
+    body {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Poppins", sans-serif;
+      color: #fff;
+    }
+
+    /* ===== Calculator Box ===== */
+    .calculator {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      border-radius: 25px;
+      padding: 25px;
+      width: 380px;
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    }
+
+    /* ===== Display ===== */
+    .display {
+      height: 80px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      font-size: 2rem;
+      text-align: right;
+      padding: 20px;
+      overflow-x: auto;
+      color: #fff;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* ===== Button Styles ===== */
+    .btn-calc {
+      width: 70px;
+      height: 70px;
+      border: none;
+      border-radius: 15px;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      transition: 0.3s;
+    }
+
+    .btn-calc:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.05);
+    }
+
+    .operator {
+      background-color: #ffb84d;
+      color: white;
+    }
+
+    .operator:hover {
+      background-color: #ffa726;
+    }
+
+    .equal {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .equal:hover {
+      background-color: #43a047;
+    }
+
+    .ac {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .ac:hover {
+      background-color: #e53935;
+    }
+
+    /* ===== Layout ===== */
+    .calc-body {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .numbers, .operators {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .numbers .row {
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <h4 class="text-center mb-3 fw-semibold">🧮 Modern Calculator</h4>
+    <div id="display" class="display">0</div>
+
+    <div class="calc-body">
+      <!-- ===== Numbers Section ===== -->
+      <div class="numbers">
+        <div class="row">
+          <button class="btn-calc" onclick="appendNumber('7')">7</button>
+          <button class="btn-calc" onclick="appendNumber('8')">8</button>
+          <button class="btn-calc" onclick="appendNumber('9')">9</button>
+        </div>
+        <div class="row">
+          <button class="btn-calc" onclick="appendNumber('4')">4</button>
+          <button class="btn-calc" onclick="appendNumber('5')">5</button>
+          <button class="btn-calc" onclick="appendNumber('6')">6</button>
+        </div>
+        <div class="row">
+          <button class="btn-calc" onclick="appendNumber('1')">1</button>
+          <button class="btn-calc" onclick="appendNumber('2')">2</button>
+          <button class="btn-calc" onclick="appendNumber('3')">3</button>
+        </div>
+        <div class="row">
+          <button class="btn-calc" onclick="appendNumber('0')">0</button>
+          <button class="btn-calc" onclick="appendNumber('.')">.</button>
+          <button class="btn-calc equal" onclick="calculate()">=</button>
+        </div>
+      </div>
+
+      <!-- ===== Operators Section ===== -->
+      <div class="operators">
+        <button class="btn-calc ac" onclick="clearDisplay()">AC</button>
+        <button class="btn-calc operator" onclick="appendOperator('%')">%</button>
+        <button class="btn-calc operator" onclick="square()">x²</button>
+        <button class="btn-calc operator" onclick="appendOperator('/')">÷</button>
+        <button class="btn-calc operator" onclick="appendOperator('*')">×</button>
+        <button class="btn-calc operator" onclick="appendOperator('-')">−</button>
+        <button class="btn-calc operator" onclick="appendOperator('+')">+</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== JavaScript Logic =====
+    let display = document.getElementById("display");
+    let currentInput = "";
+
+    // Append number
+    function appendNumber(num) {
+      if (currentInput === "0" && num !== ".") currentInput = "";
+      currentInput += num;
+      display.innerText = currentInput;
+    }
+
+    // Append operator
+    function appendOperator(op) {
+      if (currentInput === "") return;
+      if (/[+\-*/%]$/.test(currentInput)) return;
+      currentInput += op;
+      display.innerText = currentInput;
+    }
+
+    // Calculate result
+    function calculate() {
+      try {
+        let result = eval(currentInput);
+        display.innerText = result;
+        currentInput = result.toString();
+      } catch {
+        display.innerText = "Error";
+        currentInput = "";
+      }
+    }
+
+    // Clear display
+    function clearDisplay() {
+      currentInput = "";
+      display.innerText = "0";
+    }
+
+    // Square function
+    function square() {
+      if (currentInput === "") return;
+      try {
+        let result = Math.pow(eval(currentInput), 2);
+        display.innerText = result;
+        currentInput = result.toString();
+      } catch {
+        display.innerText = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
