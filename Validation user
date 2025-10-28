@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Project</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+        .container {
+            max-width: 500px;
+            background: #fff;
+            color: #333;
+            margin-top: 50px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            padding: 30px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">Registration Form</h2>
+        <form id="validationForm" onsubmit="return validateForm(event)">
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" id="name" class="form-control" placeholder="Enter your full name" onchange="validateName()">
+                <span id="nameError" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email ID</label>
+                <input type="email" id="email" class="form-control" placeholder="Enter your email" onchange="validateEmail()">
+                <span id="emailError" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="text" id="phone" class="form-control" placeholder="Enter 10-digit number" onchange="validatePhone()">
+                <span id="phoneError" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter password" onchange="validatePassword()">
+                <span id="passwordError" class="error"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Re-enter password" onchange="validateConfirmPassword()">
+                <span id="confirmError" class="error"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+            <p id="formSuccess" class="text-center mt-3 success"></p>
+        </form>
+    </div>
+
+    <script>
+        function validateName() {
+            const name = document.getElementById('name').value.trim();
+            const error = document.getElementById('nameError');
+            if (name.length < 5) {
+                error.textContent = "Name must be at least 5 characters long.";
+                return false;
+            } else {
+                error.textContent = "";
+                return true;
+            }
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email').value.trim();
+            const error = document.getElementById('emailError');
+            if (!email.includes('@')) {
+                error.textContent = "Email must contain '@' symbol.";
+                return false;
+            } else {
+                error.textContent = "";
+                return true;
+            }
+        }
+
+        function validatePhone() {
+            const phone = document.getElementById('phone').value.trim();
+            const error = document.getElementById('phoneError');
+            if (phone === "1234567890" || phone.length !== 10 || isNaN(phone)) {
+                error.textContent = "Enter a valid 10-digit phone number.";
+                return false;
+            } else {
+                error.textContent = "";
+                return true;
+            }
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password').value.trim();
+            const name = document.getElementById('name').value.trim().toLowerCase();
+            const error = document.getElementById('passwordError');
+
+            if (password.length < 8) {
+                error.textContent = "Password must be at least 8 characters.";
+                return false;
+            } else if (password.toLowerCase() === "password" || password.toLowerCase() === name) {
+                error.textContent = "Password cannot be 'password' or your name.";
+                return false;
+            } else {
+                error.textContent = "";
+                return true;
+            }
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const error = document.getElementById('confirmError');
+
+            if (password !== confirmPassword) {
+                error.textContent = "Passwords do not match.";
+                return false;
+            } else {
+                error.textContent = "";
+                return true;
+            }
+        }
+
+        function validateForm(event) {
+            event.preventDefault();
+            const validName = validateName();
+            const validEmail = validateEmail();
+            const validPhone = validatePhone();
+            const validPassword = validatePassword();
+            const validConfirm = validateConfirmPassword();
+
+            if (validName && validEmail && validPhone && validPassword && validConfirm) {
+                document.getElementById('formSuccess').textContent = "Form submitted successfully!";
+                return true;
+            } else {
+                document.getElementById('formSuccess').textContent = "";
+                alert("Please correct all the errors before submitting!");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
